@@ -11,14 +11,27 @@ db.exec(`
 `);
 
 Bun.serve({
+  port: 3000,
   routes: {
     "/resolve": {
-      POST: async (req, res) => {
-        return new Response("OK", {
-          status: 200,
-        });
+      GET(req: Request) {
+        const url = new URL(req.url);
+        const domain = url.searchParams.get("domain");
+
+        if (!domain) {
+          return new Response("Missing domain param", { status: 400 });
+        }
+
+        const result = db
+          .query("SELECT id FROM domains WHERE name = ?")
+          .get(domain) as { id: string } | undefined;
+
+        if (!result) {
+          return new Response("Domain not found", { status: 404 });
+        }
+
+        return new Response(String(result.id), { status: 200 });
       },
     },
   },
-  port: 3000,
 });

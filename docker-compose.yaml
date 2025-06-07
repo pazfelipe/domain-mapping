@@ -10,6 +10,9 @@ services:
       - "8080:80"
     volumes:
       - ./openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+    depends_on:
+      - frontend
+      - backend
   backend:
     image: backend:latest
     container_name: backend

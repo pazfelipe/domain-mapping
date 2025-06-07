@@ -1,0 +1,21 @@
+services:
+  openresty:
+    image: openresty:latest
+    build:
+      context: ./openresty
+      dockerfile: Dockerfile
+    container_name: openresty
+    ports:
+      - "8080:80"
+    volumes:
+      - ./openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+  backend:
+    image: backend:latest
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app

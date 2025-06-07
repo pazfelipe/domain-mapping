@@ -10,7 +10,8 @@ export default defineConfig({
 			'0.0.0.0',
 			'meudominio.com',
 			'whitelabel.com',
-			'tiopatinhas.com'
+			'tiopatinhas.com',
+			'frontend'
 		]
 	}
 });

@@ -2,6 +2,8 @@
 
 Este projeto demonstra como implementar um sistema white label controlado via OpenResty, onde o fluxo de requisições é gerenciado de forma inteligente para servir diferentes identidades visuais baseadas no domínio.
 
+[English version](./README-US.md)
+
 ## Fluxo do Sistema
 
 ```mermaid

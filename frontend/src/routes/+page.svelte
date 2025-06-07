@@ -3,7 +3,7 @@
 	import WhiteLabel from '$lib/components/white-label/index.svelte';
 	import LaodingPage from '$lib/components/laoding-page.svelte';
 	import MeuDominio from '$lib/components/meu-dominio/index.svelte';
-	import NotFound from './not-found.svelte';
+	import NotFound from './not-found/+page.svelte';
 
 	let domain = $state('');
 	let loading = $state(true);

@@ -20,8 +20,5 @@ Bun.serve({
       },
     },
   },
-  fetch(req) {
-    return new Response("Not Found", { status: 404 });
-  },
   port: 3000,
 });

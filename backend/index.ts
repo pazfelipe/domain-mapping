@@ -1,6 +1,9 @@
-import Database from "bun:sqlite";
+import database from "node:sqlite";
+import express, { type Request, type Response } from "express";
 
-const db = new Database("domains.db");
+const { DatabaseSync } = database;
+
+const db = new DatabaseSync("domains.db");
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS domains (
@@ -10,28 +13,27 @@ db.exec(`
   )
 `);
 
-Bun.serve({
-  port: 3000,
-  routes: {
-    "/resolve": {
-      GET(req: Request) {
-        const url = new URL(req.url);
-        const domain = url.searchParams.get("domain");
+const app = express();
+app.use(express.json());
 
-        if (!domain) {
-          return new Response("Missing domain param", { status: 400 });
-        }
+app.get("/resolve", (req: Request, res: Response) => {
+  const domain = req.query.domain as string;
 
-        const result = db
-          .query("SELECT id FROM domains WHERE name = ?")
-          .get(domain) as { id: string } | undefined;
+  if (!domain) {
+    return res.status(400).json({ error: "Missing domain param" });
+  }
 
-        if (!result) {
-          return new Response("Domain not found", { status: 404 });
-        }
+  const result = db
+    .prepare("SELECT id FROM domains WHERE name = ?")
+    .get(domain) as { id: string } | undefined;
 
-        return new Response(String(result.id), { status: 200 });
-      },
-    },
-  },
+  if (!result) {
+    return res.status(404).json({ error: "Domain not found" });
+  }
+
+  return res.status(200).json({ id: result.id });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });

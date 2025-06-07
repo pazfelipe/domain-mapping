@@ -1,11 +1,11 @@
-FROM oven/bun:1 AS base
+FROM node:24-alpine
 
 WORKDIR /app
 
 COPY . .
 
-RUN bun install --frozen-lockfile
+RUN yarn install
 
 EXPOSE 3000
 
-ENTRYPOINT ["bun", "--hot", "index.ts"]
+CMD ["node", "index.ts"]
